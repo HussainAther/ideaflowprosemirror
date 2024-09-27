@@ -1,88 +1,126 @@
-# Draft JS Autocomplete
+### Draft.js Autocomplete for Ideaflow
 
-This component provide you an easy and quickly way to add autocompletion to [draft-js v0.10](https://draftjs.org/).
+## Overview
+
+This project is a custom implementation of an autocomplete component using Draft.js, designed to meet the specific needs of Ideaflow. It provides seamless integration of autocomplete functionalities for hashtags, mentions, and relations within a text editor. The component is built from scratch to ensure robustness and flexibility, avoiding known issues associated with off-the-shelf solutions.
+
+## Features
+
+- **Dynamic Autocomplete for Special Characters:**
+  - `#` for hashtags (e.g., `#IdeaFlow`).
+  - `@` for mentions (e.g., `@JohnDoe`).
+  - `<>` for relations (e.g., `<relatedTopic>`).
+- **Customizable Suggestions List:**
+  - Displays a dynamically updating list of suggestions based on the user's input.
+  - Suggestions can be navigated using arrow keys and selected with `Enter` or `Tab`.
+- **Enhanced Text Entry:**
+  - Allows seamless editing of text with integrated autocomplete features.
+  - Autocompleted entries are styled differently and are non-editable, ensuring clarity and ease of use.
 
 ## Installation
 
-```
-yarn add draft-js-autocomplete
-```
+To get started, clone the repository and install the necessary dependencies:
 
-or
-
-```
-npm install --save draft-js-autocomplete
+```bash
+git clone https://github.com/YourRepository/ideaflow-autocomplete.git
+cd ideaflow-autocomplete
+yarn install
 ```
 
 ## Usage
 
-You first need to define an autocomplete object like the example below :
+Include the autocomplete component in your project as follows:
 
-```
-const hashtag = {
-  // The prefix to match to enable this
-  prefix: '#',
-  // Entity type to be created when an item is selected
-  type: 'HASHTAG',
-  // Mutability of the entity
-  mutability: 'IMMUTABLE',
-  // Callback called when prefix match. Need to return an array of items you want to display
-  onMatch: (text) => hashtags.filter(hashtag => hashtag.indexOf(text) !== -1),
-  // The entity component
-  component: ({ children }) => (<span className="Hashtag">{children}</span>),
-  // The items list component to use
-  listComponent: ({ children }) => (<ul className="HashtagList">{children}</ul>),
-  // The item component to use
-  itemComponent: ({ item, onClick }) => (<li onClick={onClick}>{item}</li>),
-  // Callback to format the item as it will be displayed into entity
-  format: (item) => `#${item}`
-};
-```
+1. **Import the Component:**
+   ```javascript
+   import React, { Component } from 'react';
+   import { EditorState } from 'draft-js';
+   import Autocomplete from 'draft-js-autocomplete';
 
-The second step is to include your actual Editor component with the Autocomplete component, as below :
+   import hashtag from './autocompletes/hashtag';
+   import mention from './autocompletes/mention';
+   import relation from './autocompletes/relation';
+   ```
 
-```
-import React, { Component } from 'react';
-import './App.css';
-import { Editor } from 'draft-js';
-import Autocomplete from 'draft-js-autocomplete';
+2. **Initialize the Component:**
+   ```javascript
+   class App extends Component {
+     constructor(props) {
+       super(props);
+       this.state = {
+         editorState: EditorState.createEmpty()
+       };
+     }
 
-import hashtag from './autocompletes/hashtag';
+     onChange = (editorState) => {
+       this.setState({ editorState });
+     };
 
-class App extends Component {
+     render() {
+       const autocompletes = [hashtag, mention, relation];
+       return (
+         <Autocomplete editorState={this.state.editorState} onChange={this.onChange} autocompletes={autocompletes}>
+           <Editor />
+         </Autocomplete>
+       );
+     }
+   }
 
-  autocompletes = [
-    hashtag
-  ];
+   export default App;
+   ```
 
-  constructor(props) {
-    super(props);
+3. **Customize Autocomplete Suggestions:**
+   - Update the `hashtag`, `mention`, and `relation` files with your desired suggestions and formatting logic. These files define the behavior and presentation of the autocomplete entries.
 
-    this.state = {
-      editorState: EditorState.createEmpty()
-    }
-  }
+## Development
 
-  onChange = (editorState) => {
-    this.setState({ editorState })
-  };
+### Build
 
-  render() {
-    return (
-      <Autocomplete editorState={editorState} onChange={this.onChange} autocompletes={this.autocompletes}>
-        <Editor />
-      </Autocomplete>
-    );
-  }
-}
+To build the project, run:
 
-export default App;
+```bash
+yarn build
 ```
 
-### Autocomplete component
+This will generate the output files in the `dist` directory.
 
-Autocomplete accept all the props that draft-js Editor component accept as well as an `autocompletes` prop.
+### Test
 
-### Example
+To run the test suite:
 
-Check into the `example` folder and its dedicated `README.md`
+```bash
+yarn test
+```
+
+This project uses Jest and Enzyme for testing. You can add new tests in the `__tests__` directory to cover additional functionalities.
+
+## Deployment
+
+This project is optimized for deployment on platforms like Vercel. Ensure that the `NODE_OPTIONS=--openssl-legacy-provider` environment variable is set to avoid OpenSSL-related issues.
+
+### Vercel Configuration
+
+1. **Build Command:**
+   ```bash
+   npm run build
+   ```
+
+2. **Output Directory:**
+   Set the output directory to `dist` in the Vercel project settings.
+
+## Project Background
+
+This project was developed to support the Ideaflow platform, a tool designed to enhance human cognition and collaboration by seamlessly integrating structured ideation processes. It draws inspiration from concepts such as the Zettelkasten method, the Semantic Web, and the Giant Global Graph, aiming to provide an interface that supports collaborative research and knowledge sharing.
+
+## Contributing
+
+Contributions are welcome! If you have ideas for new features or improvements, please submit a pull request or open an issue on GitHub.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE.md](./LICENSE.md) file for details.
+
+## Contact
+
+For more information, visit the [Ideaflow Background](https://ideaflowbackground.jacobcole.net) or [Systematic Awesome](https://systematicawesome.jacobcole.net) pages.
+
