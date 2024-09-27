@@ -9,7 +9,7 @@ frontend:
       commands:
         - yarn run build
   artifacts:
-    baseDirectory: build # Change this if your output directory is different
+    baseDirectory: dist # Update this line to match your actual output directory
     files:
       - '**/*'
   cache:
