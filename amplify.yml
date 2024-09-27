@@ -1,0 +1,18 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - export NODE_OPTIONS=--openssl-legacy-provider
+        - yarn install
+    build:
+      commands:
+        - yarn run build
+  artifacts:
+    baseDirectory: build # Change this if your output directory is different
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+
