@@ -15,24 +15,9 @@ module.exports = {
   },
   module: {
     rules: [
-      // Commented out ESLint loader to avoid build errors related to linting
-      // {
-      //   test: /\.(js|jsx|mjs)$/,
-      //   include: src,
-      //   enforce: 'pre',
-      //   use: [
-      //     {
-      //       options: {
-      //         formatter: eslintFormatter,
-      //         eslintPath: require.resolve('eslint'),
-      //       },
-      //       loader: require.resolve('eslint-loader'),
-      //     },
-      //   ],
-      // },
       {
         test: /\.jsx?$/,
-        include: src,
+        include: path.resolve(__dirname, 'src'),
         use: {
           loader: require.resolve('babel-loader'),
           options: {
